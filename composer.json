@@ -1,0 +1,30 @@
+{
+    "name": "iskandarjamil/epoint-client",
+    "description": "The Epoint System API Client Library.",
+    "keywords": ["Epoint System", "Epoint", "Client", "Library"],
+    "type": "library",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Iskandar Jamil",
+            "email": "iskandar.jam@gmail.com"
+        }
+    ],
+    "optimize-autoloader": true,
+    "require": {
+        "php": "^7.1"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^6.0|^7.0|^8.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "EpointClient\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "EpointClient\\Test\\": "tests/"
+        }
+    }
+}

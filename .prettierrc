@@ -1,0 +1,14 @@
+{
+  "semi": true,
+  "printWidth": 10000,
+  "overrides": [
+    {
+      "files": "*.php",
+      "options": {
+        "parser": "php",
+        "semi": true,
+        "trailingComma": "all",
+      }
+    }
+  ]
+}
