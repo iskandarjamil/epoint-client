@@ -10,9 +10,12 @@
             "email": "iskandar.jam@gmail.com"
         }
     ],
+    "config": {
+        "sort-packages": true
+    },
     "optimize-autoloader": true,
     "require": {
-        "php": "^7.1"
+        "php": "~7.1.3||~7.2.0"
     },
     "require-dev": {
         "phpunit/phpunit": "^6.0|^7.0|^8.0"
@@ -26,5 +29,6 @@
         "psr-4": {
             "EpointClient\\Test\\": "tests/"
         }
-    }
+    },
+    "version": "dev-master"
 }

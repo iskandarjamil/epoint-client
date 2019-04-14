@@ -39,6 +39,7 @@ Configure via php
 
 ```php
 define("EPOINT_ENTRY_POINT", "");
+define("EPOINT_DB", "");
 define("EPOINT_STORE_ID", "");
 define("EPOINT_USERNAME", "");
 define("EPOINT_PASSWORD", "");
