@@ -3,6 +3,12 @@
  * PHP Coding Standards fixer configuration
  */
 
+$finder = PhpCsFixer\Finder::create()
+    ->exclude('tests')
+    ->exclude('tests/Unit')
+    ->in(__DIR__)
+;
+
 return PhpCsFixer\Config::create()
     ->setRules([
         '@PSR2' => true,
@@ -24,4 +30,6 @@ return PhpCsFixer\Config::create()
         'ordered_imports' => true,
         'standardize_not_equals' => true,
         'ternary_operator_spaces' => true,
-    ]);
+    ])
+    ->setFinder($finder)
+;
