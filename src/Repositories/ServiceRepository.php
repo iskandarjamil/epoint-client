@@ -30,5 +30,5 @@ abstract class ServiceRepository implements ServiceInterface, PromiseableInterfa
     {
         $this->type = $type;
     }
-    abstract public function handle(Request $request);
+    abstract public function handle();
 }

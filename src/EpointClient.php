@@ -51,12 +51,12 @@ class EpointClient
         }
         if (function_exists('env')) {
             if (null !== env('EPOINT_ENTRY_POINT')) {
-                define(EPOINT_ENTRY_POINT, env('EPOINT_ENTRY_POINT'));
+                define('EPOINT_ENTRY_POINT', env('EPOINT_ENTRY_POINT'));
                 return true;
             }
         }
         if (isset($_ENV['EPOINT_ENTRY_POINT'])) {
-            define(EPOINT_ENTRY_POINT, $_ENV['EPOINT_ENTRY_POINT']);
+            define('EPOINT_ENTRY_POINT', $_ENV['EPOINT_ENTRY_POINT']);
             return true;
         }
 
@@ -76,12 +76,12 @@ class EpointClient
         }
         if (function_exists('env')) {
             if (null !== env('EPOINT_DB')) {
-                define(EPOINT_DB, env('EPOINT_DB'));
+                define('EPOINT_DB', env('EPOINT_DB'));
                 return true;
             }
         }
         if (isset($_ENV['EPOINT_DB'])) {
-            define(EPOINT_DB, $_ENV['EPOINT_DB']);
+            define('EPOINT_DB', $_ENV['EPOINT_DB']);
             return true;
         }
 
@@ -101,12 +101,12 @@ class EpointClient
         }
         if (function_exists('env')) {
             if (null !== env('EPOINT_STORE_ID')) {
-                define(EPOINT_STORE_ID, env('EPOINT_STORE_ID'));
+                define('EPOINT_STORE_ID', env('EPOINT_STORE_ID'));
                 return true;
             }
         }
         if (isset($_ENV['EPOINT_STORE_ID'])) {
-            define(EPOINT_STORE_ID, $_ENV['EPOINT_STORE_ID']);
+            define('EPOINT_STORE_ID', $_ENV['EPOINT_STORE_ID']);
             return true;
         }
 
@@ -126,12 +126,12 @@ class EpointClient
         }
         if (function_exists('env')) {
             if (null !== env('EPOINT_USERNAME')) {
-                define(EPOINT_USERNAME, env('EPOINT_USERNAME'));
+                define('EPOINT_USERNAME', env('EPOINT_USERNAME'));
                 return true;
             }
         }
         if (isset($_ENV['EPOINT_USERNAME'])) {
-            define(EPOINT_USERNAME, $_ENV['EPOINT_USERNAME']);
+            define('EPOINT_USERNAME', $_ENV['EPOINT_USERNAME']);
             return true;
         }
 
@@ -151,12 +151,12 @@ class EpointClient
         }
         if (function_exists('env')) {
             if (null !== env('EPOINT_PASSWORD')) {
-                define(EPOINT_PASSWORD, env('EPOINT_PASSWORD'));
+                define('EPOINT_PASSWORD', env('EPOINT_PASSWORD'));
                 return true;
             }
         }
         if (isset($_ENV['EPOINT_PASSWORD'])) {
-            define(EPOINT_PASSWORD, $_ENV['EPOINT_PASSWORD']);
+            define('EPOINT_PASSWORD', $_ENV['EPOINT_PASSWORD']);
             return true;
         }
 

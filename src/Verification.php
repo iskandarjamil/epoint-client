@@ -12,6 +12,7 @@
 namespace EpointClient;
 
 use EpointClient\Api\ApiRegisterCard;
+use EpointClient\Api\ApiVerificationCard;
 use EpointClient\Execption\TypeException;
 use EpointClient\Interfaces\ServiceInterface;
 use EpointClient\Repositories\RequestRepository;
@@ -28,10 +29,14 @@ class Verification extends EpointClient
 
     protected $cardNo;
     protected $verificationCode;
+    protected $output;
 
-    public function __construct(string $cardNo, string $verificationCode)
+    public function __construct(string $cardNo = '', string $verificationCode = '')
     {
         parent::__construct();
+
+        $this->setCardNo($cardNo);
+        $this->setVerificationCode($verificationCode);
     }
 
     /**
@@ -53,6 +58,11 @@ class Verification extends EpointClient
         return true;
     }
 
+    public function getOutput()
+    {
+        return $this->output;
+    }
+
     /**
      * Set Card No
      *
@@ -62,7 +72,9 @@ class Verification extends EpointClient
      */
     public function setCardNo(string $cardNo)
     {
-        return $this->cardNo;
+        $this->cardNo = $cardNo;
+
+        return $this;
     }
 
     /**
@@ -74,7 +86,9 @@ class Verification extends EpointClient
      */
     public function setVerificationCode(string $verificationCode)
     {
-        return $this->verificationCode;
+        $this->verificationCode = $verificationCode;
+
+        return $this;
     }
 
     /**
@@ -99,11 +113,18 @@ class Verification extends EpointClient
 
     protected function validate()
     {
-        if (empty($this->getCardNo()) || is_null($this->getCardNo)) {
+        if (empty($this->getCardNo()) || is_null($this->cardNo)) {
             throw new TypeException("Please provide card no.");
         }
-        if (empty($this->getCardNo()) || is_null($this->getCardNo)) {
+        if (empty($this->getVerificationCode()) || is_null($this->verificationCode)) {
             throw new TypeException("Please provide verification code.");
         }
+
+        $api = new ApiVerificationCard();
+        $api->setCardNo($this->getCardNo());
+        $api->setVerificationCode($this->getVerificationCode());
+        $api->handle();
+
+        $this->output = $api->getResult();
     }
 }

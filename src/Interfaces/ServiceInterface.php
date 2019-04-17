@@ -16,5 +16,5 @@ use EpointClient\Resources\Request;
 interface ServiceInterface
 {
     public function __construct(String $type = '');
-    public function handle(Request $request);
+    public function handle();
 }
