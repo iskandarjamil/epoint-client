@@ -235,26 +235,26 @@ class EpointRepository extends DataRepository
 
     protected function getEpointUrl()
     {
-        return _EPOINT_URL_;
+        return EPOINT_ENTRY_POINT;
     }
 
     protected function getEpointHash()
     {
-        return md5(_EPOINT_HASH_);
+        return md5(EPOINT_PASSWORD);
     }
 
     protected function getEpointDb()
     {
-        return _EPOINT_DB_;
+        return EPOINT_DB;
     }
 
     protected function getEpointApi()
     {
-        return _EPOINT_API_;
+        return EPOINT_USERNAME;
     }
 
     protected function getEpointStoreId()
     {
-        return _STORE_ID_;
+        return EPOINT_STORE_ID;
     }
 }

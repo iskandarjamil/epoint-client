@@ -2,6 +2,7 @@
 
 namespace Epoint\Test\Unit;
 
+use EpointClient\Execption\TypeException;
 use EpointClient\Verification;
 use PHPUnit\Framework\TestCase;
 
@@ -12,13 +13,13 @@ class VerficationTest extends TestCase
         $this->assertNotNull(Verification::class);
     }
 
-    /**
-     * @expectedException EpointClient\Execption\TypeException
-     */
     public function testExpectedExeptionOnEmpty()
     {
+        $this->expectException(TypeException::class);
+
         $epoint = new Verification();
         $epoint->execute();
+
     }
 
     public function testVerfication()
@@ -46,6 +47,15 @@ class VerficationTest extends TestCase
 
         $test = $epoint->getOutput();
         $this->assertEquals(101, $test['code']);
-        $this->assertContains('invalid card', $test['message']);
+        $this->assertStringContainsString('invalid card', $test['message']);
+    }
+
+    public function testValidCard()
+    {
+        $epoint = new Verification('9999000220220783', '0122222222');
+        $epoint->execute();
+
+        $test = $epoint->getOutput();
+        $this->assertEquals(200, $test['code']);
     }
 }
