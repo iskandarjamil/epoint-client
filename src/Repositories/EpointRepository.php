@@ -61,6 +61,10 @@ class EpointRepository extends DataRepository
             return false;
         }
 
+        if (is_null($this->getVerificationCode())) {
+            return false;
+        }
+
         if ($verification_code == $this->getVerificationCode()) {
             return true;
         }
@@ -214,7 +218,7 @@ class EpointRepository extends DataRepository
             return null;
         }
 
-        return $wallet->verification_code;
+        return isset($wallet->verification_code) ? $wallet->verification_code : null;
     }
 
     public function getCardId()

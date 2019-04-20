@@ -58,9 +58,13 @@ class Verification extends EpointClient
         return true;
     }
 
-    public function getOutput()
+    public function isValid()
     {
-        return $this->output;
+        if (is_null($this->getOutput())) {
+            throw new TypeException("Please run `execute` method, before checking validation result.");
+        }
+
+        return $this->output->code === 200;
     }
 
     /**
@@ -109,6 +113,56 @@ class Verification extends EpointClient
     public function getVerificationCode()
     {
         return $this->verificationCode;
+    }
+
+    /**
+     * Retrieve output.
+     *
+     * @return string
+     */
+    public function getOutput()
+    {
+        return $this->output;
+    }
+
+    /**
+     * Retrieve output status.
+     *
+     * @return string
+     */
+    public function getStatus()
+    {
+        return $this->output->status;
+    }
+
+    /**
+     * Retrieve output status code.
+     *
+     * @return string
+     */
+    public function getStatusCode()
+    {
+        return $this->output->code;
+    }
+
+    /**
+     * Retrieve output message.
+     *
+     * @return string
+     */
+    public function getError()
+    {
+        return $this->output->message;
+    }
+
+    /**
+     * Retrieve output status.
+     *
+     * @return string
+     */
+    public function getErrors()
+    {
+        return $this->output->message;
     }
 
     protected function validate()

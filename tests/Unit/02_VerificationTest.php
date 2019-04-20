@@ -19,7 +19,6 @@ class VerficationTest extends TestCase
 
         $epoint = new Verification();
         $epoint->execute();
-
     }
 
     public function testVerfication()
@@ -46,16 +45,43 @@ class VerficationTest extends TestCase
         $epoint->execute();
 
         $test = $epoint->getOutput();
-        $this->assertEquals(101, $test['code']);
-        $this->assertStringContainsString('invalid card', $test['message']);
+        $this->assertEquals(101, $test->code);
+        $this->assertStringContainsString('invalid card', $test->message);
     }
 
-    public function testValidCard()
+    public function testExpectedOutputUnableToVerify()
     {
-        $epoint = new Verification('9999000220220783', '0122222222');
+        $epoint = new Verification('1', '1');
+        $epoint->execute();
+
+        $test = $epoint->isValid();
+        $this->assertFalse($test);
+    }
+
+    public function testCheckStatusIsNotValid()
+    {
+        $epoint = new Verification('1', '1');
         $epoint->execute();
 
         $test = $epoint->getOutput();
-        $this->assertEquals(200, $test['code']);
+        $this->assertNotEquals(200, $test->code);
     }
+
+    // public function testSuccessVerify()
+    // {
+    //     $epoint = new Verification('9999000220220783', '0122222222');
+    //     $epoint->execute();
+
+    //     $test = $epoint->getOutput();
+    //     $this->assertEquals(200, $test->code);
+    // }
+
+    // public function testCheckStatusIsValid()
+    // {
+    //     $epoint = new Verification('1', '1');
+    //     $epoint->execute();
+
+    //     $test = $epoint->isValid();
+    //     $this->assertTrue($test);
+    // }
 }

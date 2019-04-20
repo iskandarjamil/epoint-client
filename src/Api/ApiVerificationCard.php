@@ -23,7 +23,7 @@ class ApiVerificationCard extends ServiceRepository
     public function handle()
     {
         if (!$this->isValidCardNo($this->getCardNo())) {
-            $this->result = [
+            $this->result = (object) [
                 'status' => false,
                 'code' => 101,
                 'message' => "You have entered an invalid card no.",
@@ -34,7 +34,7 @@ class ApiVerificationCard extends ServiceRepository
 
         $this->getEpointCard();
         if (!$this->epointCard->isValid()) {
-            $this->result = [
+            $this->result = (object) [
                 'status' => false,
                 'code' => 102,
                 'message' => "Your card no is invalid.",
@@ -44,10 +44,19 @@ class ApiVerificationCard extends ServiceRepository
         }
 
         $verify = $this->epointCard->verify($this->getVerificationCode());
-        if (!$verify) {
-            $this->result = [
+        if (is_null($this->epointCard->getVerificationCode())) {
+            $this->result = (object) [
                 'status' => false,
                 'code' => 103,
+                'message' => "Unable to determine your verification code.",
+            ];
+
+            return $this;
+        }
+        if (!$verify) {
+            $this->result = (object) [
+                'status' => false,
+                'code' => 104,
                 'message' => "Your verification code is invalid.",
             ];
 
@@ -57,7 +66,7 @@ class ApiVerificationCard extends ServiceRepository
         /**
          * Success
          */
-        $this->result = [
+        $this->result = (object) [
             'status' => true,
             'code' => 200,
             'message' => "Your new TCB Card has been successfully added.",
