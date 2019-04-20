@@ -10,7 +10,7 @@ class VerficationTest extends TestCase
 {
     public function testClassExists()
     {
-        $this->assertNotNull(Verification::class);
+        $this->assertTrue(class_exists(Verification::class));
     }
 
     public function testExpectedExeptionOnEmpty()
