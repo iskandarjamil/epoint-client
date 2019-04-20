@@ -13,8 +13,10 @@ namespace EpointClient;
 
 use EpointClient\Api\ApiRegisterCard;
 use EpointClient\Execption\TypeException;
+use EpointClient\Interfaces\CardInterface;
 use EpointClient\Interfaces\ServiceInterface;
 use EpointClient\Repositories\RequestRepository;
+use EpointClient\Resources\IsCardAble;
 use EpointClient\Resources\IsDateTimeAble;
 use EpointClient\Resources\Request;
 use EpointClient\Resources\Respond;
@@ -22,12 +24,11 @@ use EpointClient\Resources\Respond;
 /**
  * Epoint Card registration process
  */
-class RegisterCard
+class RegisterCard extends EpointClient implements CardInterface
 {
     use IsDateTimeAble;
+    use IsCardAble;
 
-    protected $cardNo;
-    protected $verificationCode;
     protected $customerFirstName;
     protected $customerLastName;
     protected $customerEmail;
@@ -37,6 +38,14 @@ class RegisterCard
     protected $addressLine2;
     protected $addressCity;
     protected $addressPostalCode;
+
+    public function __construct(string $cardNo = '', string $verificationCode = '')
+    {
+        parent::__construct();
+
+        $this->setCardNo($cardNo);
+        $this->setVerificationCode($verificationCode);
+    }
 
     /**
      * Execute registration card process.
@@ -55,29 +64,6 @@ class RegisterCard
         return true;
     }
 
-    /**
-     * Set Card No
-     *
-     * @param string $cardNo Card No
-     *
-     * @return void
-     */
-    public function setCardNo(string $cardNo)
-    {
-        return $this->cardNo;
-    }
-
-    /**
-     * Set Verification Code
-     *
-     * @param string $verificationCode Verification Code
-     *
-     * @return void
-     */
-    public function setVerificationCode(string $verificationCode)
-    {
-        return $this->verificationCode;
-    }
 
     /**
      * Set Card No
@@ -188,26 +174,6 @@ class RegisterCard
     }
 
     /**
-     * Retrieve Card No
-     *
-     * @return string
-     */
-    public function getCardNo()
-    {
-        return $this->cardNo;
-    }
-
-    /**
-     * Retrieve Verification Code
-     *
-     * @return string
-     */
-    public function getVerificationCode()
-    {
-        return $this->verificationCode;
-    }
-
-    /**
      * Retrieve Customer First Name
      *
      * @return string
@@ -299,8 +265,21 @@ class RegisterCard
 
     protected function validate()
     {
-        if (empty($this->getCardNo()) || is_null($this->getCardNo)) {
-            # code...
+        if (empty($this->getCardNo()) || is_null($this->cardNo)) {
+            throw new TypeException("Please provide card no.");
         }
+        if (empty($this->getVerificationCode()) || is_null($this->verificationCode)) {
+            throw new TypeException("Please provide verification code.");
+        }
+        if (empty($this->getCustomerFirstName()) || is_null($this->customerFirstName)) {
+            throw new TypeException("Customer first name is required.");
+        }
+
+        $api = new ApiVerificationCard();
+        $api->setCardNo($this->getCardNo());
+        $api->setVerificationCode($this->getVerificationCode());
+        $api->handle();
+
+        $this->output = $api->getResult();
     }
 }
