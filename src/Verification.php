@@ -14,8 +14,10 @@ namespace EpointClient;
 use EpointClient\Api\ApiRegisterCard;
 use EpointClient\Api\ApiVerificationCard;
 use EpointClient\Execption\TypeException;
+use EpointClient\Interfaces\CardInterface;
 use EpointClient\Interfaces\ServiceInterface;
 use EpointClient\Repositories\RequestRepository;
+use EpointClient\Resources\IsCardAble;
 use EpointClient\Resources\IsDateTimeAble;
 use EpointClient\Resources\Request;
 use EpointClient\Resources\Respond;
@@ -23,9 +25,10 @@ use EpointClient\Resources\Respond;
 /**
  * Epoint Card verification process
  */
-class Verification extends EpointClient
+class Verification extends EpointClient implements CardInterface
 {
     use IsDateTimeAble;
+    use IsCardAble;
 
     protected $cardNo;
     protected $verificationCode;
@@ -65,54 +68,6 @@ class Verification extends EpointClient
         }
 
         return $this->output->code === 200;
-    }
-
-    /**
-     * Set Card No
-     *
-     * @param string $cardNo Card No
-     *
-     * @return void
-     */
-    public function setCardNo(string $cardNo)
-    {
-        $this->cardNo = $cardNo;
-
-        return $this;
-    }
-
-    /**
-     * Set Verification Code
-     *
-     * @param string $verificationCode Verification Code
-     *
-     * @return void
-     */
-    public function setVerificationCode(string $verificationCode)
-    {
-        $this->verificationCode = $verificationCode;
-
-        return $this;
-    }
-
-    /**
-     * Retrieve Card No
-     *
-     * @return string
-     */
-    public function getCardNo()
-    {
-        return $this->cardNo;
-    }
-
-    /**
-     * Retrieve Verification Code
-     *
-     * @return string
-     */
-    public function getVerificationCode()
-    {
-        return $this->verificationCode;
     }
 
     /**
