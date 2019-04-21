@@ -52,6 +52,23 @@ class Customer extends DataRepository
         }
     }
 
+    public function getFullAddress()
+    {
+        $address = $this->data->address;
+        $buildAddress = "";
+
+        $buildAddress .= $address->line_1 . ", ";
+        if (!empty($address->line_2)) {
+            $buildAddress .= $address->line_2 . ", ";
+        }
+        $buildAddress .= $address->postal_code . " ";
+        $buildAddress .= $address->city . ", ";
+        $buildAddress .= $address->state . ", ";
+        $buildAddress .= $address->country;
+
+        return $buildAddress;
+    }
+
     /**
      * Check user information
      *
@@ -107,6 +124,7 @@ class Customer extends DataRepository
         $this->data = (object) [
             'first_name' => $this->getCustomerFirstName(),
             'last_name' => $this->getCustomerLastName(),
+            'full_name' => $this->getCustomerFirstName() . " " . $this->getCustomerLastName(),
             'email' => $this->getCustomerEmail(),
             'phone' => $this->getCustomerPhone(),
             'date_of_birth' => $this->getCustomerDateOfBirth(),
@@ -190,7 +208,17 @@ class Customer extends DataRepository
      */
     public function setCustomerDateOfBirth(string $customerDateOfBirth = null)
     {
-        $this->customerDateOfBirth = trim($customerDateOfBirth);
+        $customerDateOfBirth = trim($customerDateOfBirth);
+        $timestamp = strtotime($customerDateOfBirth);
+        $year = date("Y", $timestamp);
+        $month = date("m", $timestamp);
+        $day = date("d", $timestamp);
+
+        if (!checkdate($month, $day, $year)) {
+            throw new TypeException("Provided `date of birth: {$customerDateOfBirth}` is not a valid date format. Sample `1991-10-25`");
+        }
+
+        $this->customerDateOfBirth = date("Y-m-d", $timestamp);
 
         return $this;
     }

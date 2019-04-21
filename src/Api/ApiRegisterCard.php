@@ -58,14 +58,15 @@ class ApiRegisterCard extends ServiceRepository
             return $this;
         }
 
-        $createEpointUser = $this->epointCard->createUser($this->user);
+        $createEpointUser = $this->epointCard->createUser($this->customer);
         if (isset($createEpointUser->error_code) && $createEpointUser->error_code === '1000') {
-            $updateEpointUser = $this->epointCard->updateUser($this->user);
+            $updateEpointUser = $this->epointCard->updateUser($this->customer);
 
             if (isset($updateEpointUser->error_code) && $updateEpointUser->error_code === '1000') {
-                $this->result = [
+                $this->result = (object) [
                     'status' => false,
-                    'message' => "Unable to capture your information. Please refer administrator error code (001)",
+                    'code' => 105,
+                    'message' => "Unable to capture your information. Please refer administrator error code (105).",
                 ];
 
                 return $this;
@@ -75,9 +76,10 @@ class ApiRegisterCard extends ServiceRepository
         /**
          * Success
          */
-        $this->result = [
+        $this->result = (object) [
             'status' => true,
-            'message' => "Your new TCB Card has been successfully added.",
+            'code' => 200,
+            'message' => "Card has been successfully registered.",
         ];
 
         return $this;

@@ -11,6 +11,7 @@
 
 namespace EpointClient\Repositories;
 
+use EpointClient\Customer;
 use EpointClient\Repositories\DataRepository;
 use EpointClient\Resources\Curl;
 
@@ -81,24 +82,26 @@ class EpointRepository extends DataRepository
         return $this->errors;
     }
 
-    public function createUser(UserRepository $user)
+    public function createUser(Customer $customer)
     {
-        $primaryAddress = $user->getPrimaryAddress();
+        $address = $customer->address;
+        $fullAddress = $customer->getFullAddress();
+
         $data = [
             'api_key'     => $this->getEpointApi(),
             'outlet_id'   => $this->getEpointStoreId(),
             'loyaltycard' => $this->getCardId(),
             'm'           => 'update_member',
-            'first_name'  => $user->first_name,
-            'last_name'   => $user->last_name,
-            'full_name'   => $user->full_name,
-            'mobile'      => $user->contact,
-            'email'       => $user->email,
-            'dob'         => $user->dob,
-            'city'        => $primaryAddress ? trim($primaryAddress->city) . ", " . trim($primaryAddress->statename) : null,
-            'zip'         => $primaryAddress ? trim($primaryAddress->postcode) : null,
-            'address1'    => $primaryAddress ? trim($primaryAddress->address1) : null,
-            'address2'    => $primaryAddress ? trim($primaryAddress->address2) : null,
+            'first_name'  => $customer->first_name,
+            'last_name'   => $customer->last_name,
+            'full_name'   => $customer->full_name,
+            'mobile'      => $customer->phone,
+            'email'       => $customer->email,
+            'dob'         => $customer->date_of_birth,
+            'city'        => trim($address->city) . ", " . trim($address->state),
+            'zip'         => trim($address->postal_code),
+            'address1'    => trim($address->line_1),
+            'address2'    => trim($address->line_2),
         ];
 
         $response = (new Curl())
@@ -114,24 +117,26 @@ class EpointRepository extends DataRepository
         return $response;
     }
 
-    public function updateUser(UserRepository $user)
+    public function updateUser(Customer $customer)
     {
-        $primaryAddress = $user->getPrimaryAddress();
+        $address = $customer->address;
+        $fullAddress = $customer->getFullAddress();
+
         $data = [
             'api_key'     => $this->getEpointApi(),
             'outlet_id'   => $this->getEpointStoreId(),
             'loyaltycard' => $this->getCardId(),
             'm'           => 'update_member',
-            'first_name'  => $user->first_name,
-            'last_name'   => $user->last_name,
-            'full_name'   => $user->full_name,
-            'info1'       => $user->contact,
-            'info2'       => $user->email,
-            'dob'         => $user->dob,
-            'city'        => $primaryAddress ? trim($primaryAddress->city) . ", " . trim($primaryAddress->statename) : null,
-            'zip'         => $primaryAddress ? trim($primaryAddress->postcode) : null,
-            'address1'    => $primaryAddress ? trim($primaryAddress->address1) : null,
-            'address2'    => $primaryAddress ? trim($primaryAddress->address2) : null,
+            'first_name'  => $customer->first_name,
+            'last_name'   => $customer->last_name,
+            'full_name'   => $customer->full_name,
+            'info1'       => $customer->phone,
+            'info2'       => $customer->email,
+            'dob'         => $customer->date_of_birth,
+            'city'        => trim($address->city) . ", " . trim($address->state),
+            'zip'         => trim($address->postal_code),
+            'address1'    => trim($address->line_1),
+            'address2'    => trim($address->line_2),
         ];
 
         $response = (new Curl())

@@ -22,6 +22,14 @@ class RegisterCardTest extends TestCase
             'last_name' => 'Bar',
             'email' => 'foo@bar.com',
             'phone' => '0123456789',
+            'date_of_birth' => '1991-10-25',
+            'gender' => 'M',
+            'address_line_1' => '2 Jln Lada Hitam Taman Sri Tengah',
+            'address_line_2' => 'Menara Mustapha Kamal, PJ Trade Centre',
+            'address_city' => 'Kuala Lumpur',
+            'address_postal_code' => 50000,
+            'address_state' => 'Selangor',
+            'address_country' => 'Malaysia',
         ];
     }
 
@@ -30,17 +38,28 @@ class RegisterCardTest extends TestCase
         $this->assertTrue(class_exists($this->classname));
     }
 
-    public function testExpectedExeptionOnEmpty()
+    public function testExpectedExeptionRequireCard()
     {
         $this->expectException(TypeException::class);
+        $this->expectExceptionMessage('Please provide card no.');
 
         $epoint = new $this->classname();
+        $epoint->execute();
+    }
+
+    public function testExpectedExeptionRequireVerification()
+    {
+        $this->expectException(TypeException::class);
+        $this->expectExceptionMessage('Please provide verification code.');
+
+        $epoint = new $this->classname('1');
         $epoint->execute();
     }
 
     public function testExpecteExceptionOnEmptyUser()
     {
         $this->expectException(TypeException::class);
+        $this->expectExceptionMessage('first name is required.');
 
         $epoint = new $this->classname('1', '1');
         $epoint->execute();
@@ -151,6 +170,17 @@ class RegisterCardTest extends TestCase
 
         $test = $epoint->getOutput();
         $this->assertNotEquals(200, $test->code);
+    }
+
+    public function testRegisterUser()
+    {
+        $epoint = new $this->classname('9999000220220783', '0122222222');
+        $epoint->customer($this->customerData);
+        $epoint->execute();
+
+        $test = $epoint->getOutput();
+        $this->assertEquals(200, $test->code);
+        $this->assertEquals('Card has been successfully registered.', $test->message);
     }
 
     public function getCheckerCustomerProvider()

@@ -15,12 +15,8 @@ use EpointClient\Api\ApiRegisterCard;
 use EpointClient\Customer;
 use EpointClient\Execption\TypeException;
 use EpointClient\Interfaces\CardInterface;
-use EpointClient\Interfaces\ServiceInterface;
-use EpointClient\Repositories\RequestRepository;
 use EpointClient\Resources\IsCardAble;
 use EpointClient\Resources\IsDateTimeAble;
-use EpointClient\Resources\Request;
-use EpointClient\Resources\Respond;
 
 /**
  * Epoint Card registration process
