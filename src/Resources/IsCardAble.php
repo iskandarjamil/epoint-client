@@ -25,7 +25,7 @@ trait IsCardAble
      */
     public function setCardNo(string $cardNo)
     {
-        $this->cardNo = $cardNo;
+        $this->cardNo = trim($cardNo);
 
         return $this;
     }
@@ -39,7 +39,7 @@ trait IsCardAble
      */
     public function setVerificationCode(string $verificationCode)
     {
-        $this->verificationCode = $verificationCode;
+        $this->verificationCode = trim($verificationCode);
 
         return $this;
     }

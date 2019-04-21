@@ -39,6 +39,28 @@ class VerficationTest extends TestCase
         $this->assertNotEmpty($test);
     }
 
+    /**
+     * @dataProvider getCardProvider
+     */
+    public function testCardNoTrimValue($input, $expected)
+    {
+        $epoint = new Verification($input, '1');
+        $epoint->execute();
+
+        $this->assertEquals($expected, $epoint->getCardNo());
+    }
+
+    /**
+     * @dataProvider getVerficationCodeProvider
+     */
+    public function testVerficationCodeTrimValue($input, $expected)
+    {
+        $epoint = new Verification('1', $input);
+        $epoint->execute();
+
+        $this->assertEquals($expected, $epoint->getVerificationCode());
+    }
+
     public function testExpectedOutputInvalidCard()
     {
         $epoint = new Verification('1', '1');
@@ -84,4 +106,32 @@ class VerficationTest extends TestCase
     //     $test = $epoint->isValid();
     //     $this->assertTrue($test);
     // }
+
+    public function getCardProvider()
+    {
+        return [
+            [' 1 ', '1'], //
+            [' 1', '1'],
+            ['1 ', '1'],
+            ['12e12d1d12d ', '12e12d1d12d'],
+            [' 12e12d1d12d ', '12e12d1d12d'],
+            [' 12e12d1d12d      ', '12e12d1d12d'],
+            ['12e12d1d12d      ', '12e12d1d12d'],
+            ['     12e12d1d12d', '12e12d1d12d'],
+        ];
+    }
+
+    public function getVerficationCodeProvider()
+    {
+        return [
+            [' 1 ', '1'], //
+            [' 1', '1'],
+            ['1 ', '1'],
+            ['12e12d1d12d ', '12e12d1d12d'],
+            [' 12e12d1d12d ', '12e12d1d12d'],
+            [' 12e12d1d12d      ', '12e12d1d12d'],
+            ['12e12d1d12d      ', '12e12d1d12d'],
+            ['     12e12d1d12d', '12e12d1d12d'],
+        ];
+    }
 }
