@@ -13,7 +13,7 @@ namespace EpointClient;
 
 use EpointClient\Api\ApiRegisterCard;
 use EpointClient\Customer;
-use EpointClient\Execption\TypeException;
+use EpointClient\Exception\TypeException;
 use EpointClient\Interfaces\CardInterface;
 use EpointClient\Resources\IsCardAble;
 use EpointClient\Resources\IsDateTimeAble;
@@ -53,7 +53,7 @@ class RegisterCard extends EpointClient implements CardInterface
      * Execute registration card process.
      *
      * @return void
-     * @throws Exception
+     * @throws TypeException
      */
     public function execute()
     {

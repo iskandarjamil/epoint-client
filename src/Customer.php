@@ -11,7 +11,7 @@
 
 namespace EpointClient;
 
-use EpointClient\Execption\TypeException;
+use EpointClient\Exception\TypeException;
 use EpointClient\Repositories\DataRepository;
 
 /**

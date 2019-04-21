@@ -13,7 +13,7 @@ namespace EpointClient;
 
 use EpointClient\Api\ApiRegisterCard;
 use EpointClient\Api\ApiVerificationCard;
-use EpointClient\Execption\TypeException;
+use EpointClient\Exception\TypeException;
 use EpointClient\Interfaces\CardInterface;
 use EpointClient\Interfaces\ServiceInterface;
 use EpointClient\Repositories\RequestRepository;
@@ -47,6 +47,7 @@ class Verification extends EpointClient implements CardInterface
      * Execute registration card process.
      *
      * @return void
+     * @throws TypeException
      * @throws Exception
      */
     public function execute()
@@ -55,8 +56,8 @@ class Verification extends EpointClient implements CardInterface
             $this->validate();
         } catch (TypeException $e) {
             throw new TypeException($e->getMessage());
-        } catch (\Execption $e) {
-            throw new \Execption($e->getMessage());
+        } catch (\Exception $e) {
+            throw new \Exception($e->getMessage());
         }
 
         return true;

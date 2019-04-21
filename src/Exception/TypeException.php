@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace EpointClient\Execption;
+namespace EpointClient\Exception;
 
 class TypeException extends \Exception
 {

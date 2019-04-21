@@ -2,7 +2,7 @@
 
 namespace Epoint\Test\Unit;
 
-use EpointClient\Execption\TypeException;
+use EpointClient\Exception\TypeException;
 use EpointClient\Verification;
 use PHPUnit\Framework\TestCase;
 
