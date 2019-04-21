@@ -11,7 +11,9 @@
 
 namespace EpointClient\Api;
 
+use EpointClient\Customer;
 use EpointClient\Interfaces\ServiceInterface;
+use EpointClient\RegisterCard;
 use EpointClient\Repositories\CBTLCardRepository;
 use EpointClient\Repositories\EpointRepository;
 use EpointClient\Repositories\ServiceRepository;
@@ -21,34 +23,36 @@ use EpointClient\Resources\Request;
 
 class ApiRegisterCard extends ServiceRepository
 {
+    protected $parent;
+    protected $customer;
     protected $user;
     protected $epointCard;
     protected $cbtlCard;
 
-    public function handle(Request $request)
+    public function __construct(RegisterCard $parent, Customer $customer)
     {
-        $this->request = $request;
-        $this->getVars();
+        $this->parent = $parent;
+        $this->customer = $customer;
+    }
 
-        if (!$this->validate()) {
-            return $this;
+    public function handle()
+    {
+        if (!$this->isValidCardNo($this->getCardNo())) {
+            $this->result = (object) [
+                'status' => false,
+                'code' => 101,
+                'message' => "You have entered an invalid card no.",
+            ];
+
+            return false;
         }
 
         $this->getEpointCard();
         if (!$this->epointCard->isValid()) {
-            $this->result = [
+            $this->result = (object) [
                 'status' => false,
+                'code' => 102,
                 'message' => "Your card no is invalid.",
-            ];
-
-            return $this;
-        }
-
-        $verify = $this->epointCard->verify($this->getVerificationCode());
-        if (!$verify) {
-            $this->result = [
-                'status' => false,
-                'message' => "Your verification code is invalid.",
             ];
 
             return $this;
@@ -68,9 +72,6 @@ class ApiRegisterCard extends ServiceRepository
             }
         }
 
-        $this->getCbtlCard();
-        $createCbtlUser = $this->cbtlCard->create($this->epointCard, $this->user);
-
         /**
          * Success
          */
@@ -80,56 +81,6 @@ class ApiRegisterCard extends ServiceRepository
         ];
 
         return $this;
-    }
-
-    public function validate()
-    {
-        if (!$this->exists('cardno')) {
-            $this->result = [
-                'status' => false,
-                'message' => "TCB card no. is required.",
-            ];
-
-            return false;
-        }
-
-        if (!$this->exists('verification_code')) {
-            $this->result = [
-                'status' => false,
-                'message' => "Verification code is required.",
-            ];
-
-            return false;
-        }
-
-        if (!$this->isValidCardNo($this->getCardNo())) {
-            $this->result = [
-                'status' => false,
-                'message' => "You have entered an invalid TCB card number.",
-            ];
-
-            return false;
-        }
-
-        if (!$this->isUserLogged()) {
-            $this->result = [
-                'status' => false,
-                'message' => "Please login to your account.",
-            ];
-
-            return false;
-        }
-
-        if (!$this->isUserExists()) {
-            $this->result = [
-                'status' => false,
-                'message' => "Your account does not exist.",
-            ];
-
-            return false;
-        }
-
-        return true;
     }
 
     public function exists(string $type)
@@ -144,50 +95,28 @@ class ApiRegisterCard extends ServiceRepository
         return false;
     }
 
-    public function isUserLogged()
-    {
-        return !is_null(userId());
-    }
-
-    public function isUserExists()
-    {
-        $this->getCurrentUser();
-
-        return $this->user->exists();
-    }
-
     /*
      * Getter
      */
 
+    public function getResult()
+    {
+        return $this->result;
+    }
+
     public function getCardNo()
     {
-        return $this->vars['cardno'];
+        return $this->parent->getCardNo();
     }
+
     public function getVerificationCode()
     {
-        return $this->vars['verification_code'];
+        return $this->parent->getVerificationCode();
     }
 
-    public function getVars()
+    public function getCustomer()
     {
-        $cardno = trim($this->request->get('cardno'));
-        $verification_code = trim($this->request->get('verification_code'));
-
-        $this->vars = compact('cardno', 'verification_code');
-
-        return $this;
-    }
-
-    public function getCurrentUser()
-    {
-        if (!is_null($this->user)) {
-            return $this->user;
-        }
-
-        $this->user = new UserRepository(userId());
-
-        return $this;
+        return $this->customer;
     }
 
     public function getEpointCard()
@@ -200,21 +129,6 @@ class ApiRegisterCard extends ServiceRepository
 
         return $this;
     }
-
-    public function getCbtlCard()
-    {
-        if (!is_null($this->cbtlCard)) {
-            return $this->cbtlCard;
-        }
-
-        $this->cbtlCard = new CBTLCardRepository($this->getCardNo());
-
-        return $this;
-    }
-
-    /**
-     * Setter
-     */
 
     /*
      * Checker

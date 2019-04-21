@@ -19,8 +19,6 @@ abstract class DataRepository
 
     protected $data;
 
-    abstract public function __construct($id = null);
-
     public function __call($name, $arguments)
     {
         switch ($name) {
@@ -37,6 +35,12 @@ abstract class DataRepository
         if ($this->data) {
             if (isset($this->data->{$name})) {
                 return $this->data->{$name};
+            }
+
+            if (is_array($this->data)) {
+                if (isset($this->data[$name])) {
+                    return $this->data[$name];
+                }
             }
         }
 
