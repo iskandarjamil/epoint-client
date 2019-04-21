@@ -52,6 +52,11 @@ class EpointRepository extends DataRepository
         return false;
     }
 
+    public function __isset($name)
+    {
+        return isset($this->data->{$name});
+    }
+
     public function verify($verification_code)
     {
         // if (!is_object($this->data)) {
