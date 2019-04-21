@@ -129,9 +129,7 @@ class Verification extends EpointClient implements CardInterface
             throw new TypeException("Please provide verification code.");
         }
 
-        $api = new ApiVerificationCard();
-        $api->setCardNo($this->getCardNo());
-        $api->setVerificationCode($this->getVerificationCode());
+        $api = new ApiVerificationCard($this);
         $api->handle();
 
         $this->output = $api->getResult();

@@ -20,15 +20,12 @@ abstract class ServiceRepository implements ServiceInterface, PromiseableInterfa
 {
     use IsPromiseable;
 
-    protected $type;
-    protected $vars;
-    protected $request;
-    protected $result;
+    protected $parent;
     protected $isError = false;
 
-    public function __construct(String $type = '')
+    public function __construct($parent)
     {
-        $this->type = $type;
+        $this->parent = $parent;
     }
     abstract public function handle();
 }

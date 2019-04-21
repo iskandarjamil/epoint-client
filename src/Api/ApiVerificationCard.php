@@ -15,10 +15,17 @@ use EpointClient\Interfaces\ServiceInterface;
 use EpointClient\Repositories\EpointRepository;
 use EpointClient\Repositories\ServiceRepository;
 use EpointClient\Repositories\UserRepository;
+use EpointClient\Verification;
 
 class ApiVerificationCard extends ServiceRepository
 {
+    protected $parent;
     protected $epointCard;
+
+    public function __construct(Verification $parent)
+    {
+        $this->parent = $parent;
+    }
 
     public function handle()
     {
@@ -53,6 +60,7 @@ class ApiVerificationCard extends ServiceRepository
 
             return $this;
         }
+
         if (!$verify) {
             $this->result = (object) [
                 'status' => false,
@@ -69,7 +77,7 @@ class ApiVerificationCard extends ServiceRepository
         $this->result = (object) [
             'status' => true,
             'code' => 200,
-            'message' => "Your new TCB Card has been successfully added.",
+            'message' => "Your card has been verified and is valid.",
         ];
 
         return $this;
@@ -86,22 +94,12 @@ class ApiVerificationCard extends ServiceRepository
 
     public function getCardNo()
     {
-        return $this->cardNo;
+        return $this->parent->getCardNo();
     }
 
     public function getVerificationCode()
     {
-        return $this->verificationCode;
-    }
-
-    public function getVars()
-    {
-        $cardno = trim($this->request->get('cardno'));
-        $verification_code = trim($this->request->get('verification_code'));
-
-        $this->vars = compact('cardno', 'verification_code');
-
-        return $this;
+        return $this->parent->getVerificationCode();
     }
 
     public function getEpointCard()
@@ -111,34 +109,6 @@ class ApiVerificationCard extends ServiceRepository
         }
 
         $this->epointCard = new EpointRepository($this->getCardNo());
-
-        return $this;
-    }
-
-    /**
-     * Setter
-     */
-
-    /**
-     * @param string $cardNo
-     *
-     * @return void
-     */
-    public function setCardNo(string $cardNo)
-    {
-        $this->cardNo = $cardNo;
-
-        return $this;
-    }
-
-    /**
-     * @param string $verificationCode
-     *
-     * @return void
-     */
-    public function setVerificationCode(string $verificationCode)
-    {
-        $this->verificationCode = $verificationCode;
 
         return $this;
     }
