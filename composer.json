@@ -24,15 +24,15 @@
     "autoload": {
         "psr-4": {
             "EpointClient\\": "src/"
-        },
-        "files": [
-            "src/helpers/global.php"
-        ]
+        }
     },
     "autoload-dev": {
         "psr-4": {
             "EpointClient\\Test\\": "tests/"
-        }
+        },
+        "files": [
+            "src/helpers/global.php"
+        ]
     },
     "version": "dev-master"
 }
