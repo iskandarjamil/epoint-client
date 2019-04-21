@@ -12,6 +12,7 @@
 namespace EpointClient\Repositories;
 
 use EpointClient\Customer;
+use EpointClient\Data\Deduct;
 use EpointClient\Data\Topup;
 use EpointClient\Repositories\DataRepository;
 use EpointClient\Resources\Curl;
@@ -170,6 +171,32 @@ class EpointRepository extends DataRepository
             'value'       => $topup->getAmount(),
             'unique_id'   => $topup->getOrderNo(),
             'receipt_no'  => $topup->getReceiptNo(),
+        ];
+
+        $response = (new Curl())
+            ->url($this->getEntryPoint())
+            ->data($data, 'json')
+            ->wrapper("data")
+            ->isPost()
+            ->run();
+        $response = json_decode($response);
+
+        $this->setErrors($response);
+
+
+        return $response;
+    }
+
+    public function deduct(Deduct $deduct)
+    {
+        $data = [
+            'api_key'     => $this->getEpointApi(),
+            'outlet_id'   => $this->getEpointStoreId(),
+            'loyaltycard' => $this->getCardId(),
+            'm'           => 'redeem_stored_value',
+            'value'       => $deduct->getAmount(),
+            'unique_id'   => $deduct->getOrderNo(),
+            'receipt_no'  => $deduct->getReceiptNo(),
         ];
 
         $response = (new Curl())

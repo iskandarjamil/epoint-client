@@ -11,26 +11,26 @@
 
 namespace EpointClient;
 
-use EpointClient\Api\ApiRegisterCard;
-use EpointClient\Api\ApiVerificationCard;
+use EpointClient\Api\ApiGetCard;
+use EpointClient\Api\ApiDeductCard;
+use EpointClient\Data\Deduct;
 use EpointClient\Exception\TypeException;
 use EpointClient\Interfaces\CardInterface;
-use EpointClient\Interfaces\ServiceInterface;
 use EpointClient\Resources\IsCardAble;
 use EpointClient\Resources\IsDateTimeAble;
 use EpointClient\Resources\IsResultAble;
 
 /**
- * Epoint Card verification process
+ * Epoint Card deduction process
  */
-class Verification extends EpointClient implements CardInterface
+class DeductCard extends EpointClient implements CardInterface
 {
     use IsDateTimeAble;
     use IsCardAble;
     use IsResultAble;
 
-    protected $cardNo;
-    protected $verificationCode;
+    protected $topup;
+    protected $topupData = [];
 
     public function __construct(string $cardNo = '', string $verificationCode = '')
     {
@@ -41,11 +41,10 @@ class Verification extends EpointClient implements CardInterface
     }
 
     /**
-     * Execute registration card process.
+     * Execute get card.
      *
      * @return void
      * @throws TypeException
-     * @throws Exception
      */
     public function execute()
     {
@@ -53,20 +52,39 @@ class Verification extends EpointClient implements CardInterface
             $this->validate();
         } catch (TypeException $e) {
             throw new TypeException($e->getMessage());
-        } catch (\Exception $e) {
-            throw new \Exception($e->getMessage());
         }
 
         return true;
     }
 
-    public function isValid()
+    public function addTransaction(array $topup)
     {
-        if (is_null($this->getOutput())) {
-            throw new TypeException("Please run `execute` method, before checking validation result.");
+        $this->topupData = $topup;
+    }
+
+    public function getDeduct()
+    {
+        return $this->topup;
+    }
+
+    public function get()
+    {
+        return $this->output->data;
+    }
+
+    public function isAccepted()
+    {
+        $response = $this->output->data;
+
+        if (!isset($response->stored_value_balance)) {
+            return false;
         }
 
-        return $this->output->code === 200;
+        if ($response->value_deducted !== $this->topup->getAmount()) {
+            return false;
+        }
+
+        return true;
     }
 
     protected function validate()
@@ -78,7 +96,9 @@ class Verification extends EpointClient implements CardInterface
             throw new TypeException("Please provide verification code.");
         }
 
-        $api = new ApiVerificationCard($this);
+        $this->topup = new Deduct($this->topupData);
+
+        $api = new ApiDeductCard($this, $this->topup);
         $api->handle();
 
         $this->output = $api->getResult();
