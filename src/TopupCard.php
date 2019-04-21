@@ -21,7 +21,7 @@ use EpointClient\Resources\IsDateTimeAble;
 use EpointClient\Resources\IsResultAble;
 
 /**
- * Epoint Card registration process
+ * Epoint Card topup process
  */
 class TopupCard extends EpointClient implements CardInterface
 {
