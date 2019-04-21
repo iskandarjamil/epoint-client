@@ -16,4 +16,5 @@ use EpointClient\Resources\Request;
 interface CardInterface
 {
     public function __construct(string $cardNo = '', string $verificationCode = '');
+    public function execute();
 }

@@ -19,6 +19,7 @@ use EpointClient\Interfaces\ServiceInterface;
 use EpointClient\Repositories\RequestRepository;
 use EpointClient\Resources\IsCardAble;
 use EpointClient\Resources\IsDateTimeAble;
+use EpointClient\Resources\IsResultAble;
 use EpointClient\Resources\Request;
 use EpointClient\Resources\Respond;
 
@@ -29,10 +30,10 @@ class Verification extends EpointClient implements CardInterface
 {
     use IsDateTimeAble;
     use IsCardAble;
+    use IsResultAble;
 
     protected $cardNo;
     protected $verificationCode;
-    protected $output;
 
     public function __construct(string $cardNo = '', string $verificationCode = '')
     {
@@ -68,56 +69,6 @@ class Verification extends EpointClient implements CardInterface
         }
 
         return $this->output->code === 200;
-    }
-
-    /**
-     * Retrieve output.
-     *
-     * @return string
-     */
-    public function getOutput()
-    {
-        return $this->output;
-    }
-
-    /**
-     * Retrieve output status.
-     *
-     * @return string
-     */
-    public function getStatus()
-    {
-        return $this->output->status;
-    }
-
-    /**
-     * Retrieve output status code.
-     *
-     * @return string
-     */
-    public function getStatusCode()
-    {
-        return $this->output->code;
-    }
-
-    /**
-     * Retrieve output message.
-     *
-     * @return string
-     */
-    public function getError()
-    {
-        return $this->output->message;
-    }
-
-    /**
-     * Retrieve output status.
-     *
-     * @return string
-     */
-    public function getErrors()
-    {
-        return $this->output->message;
     }
 
     protected function validate()

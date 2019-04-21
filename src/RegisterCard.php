@@ -17,6 +17,7 @@ use EpointClient\Execption\TypeException;
 use EpointClient\Interfaces\CardInterface;
 use EpointClient\Resources\IsCardAble;
 use EpointClient\Resources\IsDateTimeAble;
+use EpointClient\Resources\IsResultAble;
 
 /**
  * Epoint Card registration process
@@ -25,10 +26,10 @@ class RegisterCard extends EpointClient implements CardInterface
 {
     use IsDateTimeAble;
     use IsCardAble;
+    use IsResultAble;
 
     protected $customer;
     protected $customerData = [];
-    protected $output;
 
     public function __construct(string $cardNo = '', string $verificationCode = '')
     {
@@ -72,56 +73,6 @@ class RegisterCard extends EpointClient implements CardInterface
         }
 
         return $this->output->code === 200;
-    }
-
-    /**
-     * Retrieve output.
-     *
-     * @return string
-     */
-    public function getOutput()
-    {
-        return $this->output;
-    }
-
-    /**
-     * Retrieve output status.
-     *
-     * @return string
-     */
-    public function getStatus()
-    {
-        return $this->output->status;
-    }
-
-    /**
-     * Retrieve output status code.
-     *
-     * @return string
-     */
-    public function getStatusCode()
-    {
-        return $this->output->code;
-    }
-
-    /**
-     * Retrieve output message.
-     *
-     * @return string
-     */
-    public function getError()
-    {
-        return $this->output->message;
-    }
-
-    /**
-     * Retrieve output status.
-     *
-     * @return string
-     */
-    public function getErrors()
-    {
-        return $this->output->message;
     }
 
     protected function validate()
