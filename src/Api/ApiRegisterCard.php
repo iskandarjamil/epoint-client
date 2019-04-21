@@ -121,10 +121,12 @@ class ApiRegisterCard extends ServiceRepository
         return $this->customer;
     }
 
-    public function getEpointCard()
+    public function getEpointCard($useCache = true)
     {
-        if (!is_null($this->epointCard)) {
-            return $this->epointCard;
+        if ($useCache === true) {
+            if (!is_null($this->epointCard)) {
+                return $this->epointCard;
+            }
         }
 
         $this->epointCard = new EpointRepository($this->getCardNo());

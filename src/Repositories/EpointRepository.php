@@ -12,8 +12,10 @@
 namespace EpointClient\Repositories;
 
 use EpointClient\Customer;
+use EpointClient\Data\Topup;
 use EpointClient\Repositories\DataRepository;
 use EpointClient\Resources\Curl;
+use EpointClient\TopupCard;
 
 class EpointRepository extends DataRepository
 {
@@ -158,6 +160,32 @@ class EpointRepository extends DataRepository
         return $response;
     }
 
+    public function topup(Topup $topup)
+    {
+        $data = [
+            'api_key'     => $this->getEpointApi(),
+            'outlet_id'   => $this->getEpointStoreId(),
+            'loyaltycard' => $this->getCardId(),
+            'm'           => 'update_stored_value',
+            'value'       => $topup->getAmount(),
+            'unique_id'   => $topup->getOrderNo(),
+            'receipt_no'  => $topup->getReceiptNo(),
+        ];
+
+        $response = (new Curl())
+            ->url($this->getEntryPoint())
+            ->data($data, 'json')
+            ->wrapper("data")
+            ->isPost()
+            ->run();
+        $response = json_decode($response);
+
+        $this->setErrors($response);
+
+
+        return $response;
+    }
+
     public function isValid()
     {
         return !is_null($this->data);
@@ -239,7 +267,7 @@ class EpointRepository extends DataRepository
             return null;
         }
 
-        return $wallet->card_id;
+        return isset($wallet->card_id) ? $wallet->card_id : null;
     }
 
     protected function getEntryPoint()

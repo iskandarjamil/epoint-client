@@ -102,10 +102,12 @@ class ApiVerificationCard extends ServiceRepository
         return $this->parent->getVerificationCode();
     }
 
-    public function getEpointCard()
+    public function getEpointCard($useCache = true)
     {
-        if (!is_null($this->epointCard)) {
-            return $this->epointCard;
+        if ($useCache === true) {
+            if (!is_null($this->epointCard)) {
+                return $this->epointCard;
+            }
         }
 
         $this->epointCard = new EpointRepository($this->getCardNo());

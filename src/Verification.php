@@ -26,7 +26,7 @@ use EpointClient\Resources\Respond;
 /**
  * Epoint Card verification process
  */
-class Verification extends EpointClient implements CardInterface
+class Topup extends EpointClient implements CardInterface
 {
     use IsDateTimeAble;
     use IsCardAble;
