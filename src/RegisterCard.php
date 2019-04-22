@@ -12,7 +12,7 @@
 namespace EpointClient;
 
 use EpointClient\Api\ApiRegisterCard;
-use EpointClient\Customer;
+use EpointClient\Data\Customer;
 use EpointClient\Exception\TypeException;
 use EpointClient\Interfaces\CardInterface;
 use EpointClient\Resources\IsCardAble;

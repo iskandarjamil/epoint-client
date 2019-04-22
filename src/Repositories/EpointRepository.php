@@ -11,7 +11,7 @@
 
 namespace EpointClient\Repositories;
 
-use EpointClient\Customer;
+use EpointClient\Data\Customer;
 use EpointClient\Data\Deduct;
 use EpointClient\Data\Topup;
 use EpointClient\Repositories\DataRepository;

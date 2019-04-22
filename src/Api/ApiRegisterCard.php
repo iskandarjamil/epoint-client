@@ -11,7 +11,7 @@
 
 namespace EpointClient\Api;
 
-use EpointClient\Customer;
+use EpointClient\Data\Customer;
 use EpointClient\Interfaces\ServiceInterface;
 use EpointClient\RegisterCard;
 use EpointClient\Repositories\CBTLCardRepository;

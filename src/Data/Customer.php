@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace EpointClient;
+namespace EpointClient\Data;
 
 use EpointClient\Exception\TypeException;
 use EpointClient\Repositories\DataRepository;
