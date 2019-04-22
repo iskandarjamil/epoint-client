@@ -181,6 +181,7 @@ class RegisterCardTest extends TestCase
         $test = $epoint->getOutput();
         $this->assertEquals(200, $test->code);
         $this->assertEquals('Card has been successfully registered.', $test->message);
+        $this->assertTrue($epoint->isRegistered());
     }
 
     public function getCheckerCustomerProvider()
