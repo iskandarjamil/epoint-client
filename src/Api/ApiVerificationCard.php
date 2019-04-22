@@ -50,26 +50,30 @@ class ApiVerificationCard extends ServiceRepository
             return $this;
         }
 
-        $verify = $this->epointCard->verify($this->getVerificationCode());
-        if (is_null($this->epointCard->getVerificationCode())) {
-            $this->result = (object) [
-                'status' => false,
-                'code' => 103,
-                'message' => "Unable to determine your verification code.",
-            ];
+        /**
+         * Temporary disable verification checker
+         * @var [type]
+         */
+        // $verify = $this->epointCard->verify($this->getVerificationCode());
+        // if (is_null($this->epointCard->getVerificationCode())) {
+        //     $this->result = (object) [
+        //         'status' => false,
+        //         'code' => 103,
+        //         'message' => "Unable to determine your verification code.",
+        //     ];
 
-            return $this;
-        }
+        //     return $this;
+        // }
 
-        if (!$verify) {
-            $this->result = (object) [
-                'status' => false,
-                'code' => 104,
-                'message' => "Your verification code is invalid.",
-            ];
+        // if (!$verify) {
+        //     $this->result = (object) [
+        //         'status' => false,
+        //         'code' => 104,
+        //         'message' => "Your verification code is invalid.",
+        //     ];
 
-            return $this;
-        }
+        //     return $this;
+        // }
 
         /**
          * Success
