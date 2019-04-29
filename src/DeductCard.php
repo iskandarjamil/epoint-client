@@ -41,7 +41,7 @@ class DeductCard extends EpointClient implements CardInterface
     }
 
     /**
-     * Execute get card.
+     * Execute deduct card balance.
      *
      * @return void
      * @throws TypeException
