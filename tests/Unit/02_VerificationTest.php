@@ -89,23 +89,23 @@ class VerficationTest extends TestCase
         $this->assertNotEquals(200, $test->code);
     }
 
-    // public function testSuccessVerify()
-    // {
-    //     $epoint = new Verification('9999000220220783', '0122222222');
-    //     $epoint->execute();
+    public function testSuccessVerify()
+    {
+        $epoint = new Verification('9999000220220783', '0122222222');
+        $epoint->execute();
 
-    //     $test = $epoint->getOutput();
-    //     $this->assertEquals(200, $test->code);
-    // }
+        $test = $epoint->getOutput();
+        $this->assertEquals(200, $test->code);
+    }
 
-    // public function testCheckStatusIsValid()
-    // {
-    //     $epoint = new Verification('1', '1');
-    //     $epoint->execute();
+    public function testCheckStatusIsValid()
+    {
+        $epoint = new Verification('9999000220220783', '0122222222');
+        $epoint->execute();
 
-    //     $test = $epoint->isValid();
-    //     $this->assertTrue($test);
-    // }
+        $test = $epoint->isValid();
+        $this->assertTrue($test);
+    }
 
     public function getCardProvider()
     {
