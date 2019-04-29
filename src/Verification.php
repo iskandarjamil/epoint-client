@@ -41,7 +41,7 @@ class Verification extends EpointClient implements CardInterface
     }
 
     /**
-     * Execute registration card process.
+     * Execute verification card process.
      *
      * @return void
      * @throws TypeException

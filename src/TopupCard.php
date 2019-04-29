@@ -41,7 +41,7 @@ class TopupCard extends EpointClient implements CardInterface
     }
 
     /**
-     * Execute get card.
+     * Execute top up card balance.
      *
      * @return void
      * @throws TypeException
