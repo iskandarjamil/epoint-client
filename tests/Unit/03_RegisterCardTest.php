@@ -172,6 +172,28 @@ class RegisterCardTest extends TestCase
         $this->assertNotEquals(200, $test->code);
     }
 
+    public function testExpectedInvalidCardNo()
+    {
+        $epoint = new $this->classname('1', '1');
+        $epoint->customer($this->customerData);
+        $epoint->execute();
+
+        $test = $epoint->getOutput();
+        $this->assertFalse($epoint->isRegistered());
+        $this->assertEquals('You have entered an invalid card no.', $test->message);
+    }
+
+    public function testExpectedInvalidCardVerfication()
+    {
+        $epoint = new $this->classname('9999000220220783', '1');
+        $epoint->customer($this->customerData);
+        $epoint->execute();
+
+        $test = $epoint->getOutput();
+        $this->assertFalse($epoint->isRegistered());
+        $this->assertEquals('Your verification code is invalid.', $test->message);
+    }
+
     public function testRegisterUser()
     {
         $epoint = new $this->classname('9999000220220783', '0122222222');

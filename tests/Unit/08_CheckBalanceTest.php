@@ -41,6 +41,26 @@ class CheckBalanceTest extends TestCase
         $epoint->execute();
     }
 
+    public function testExpectedInvalidCardNo()
+    {
+        $epoint = new $this->classname('1', '1');
+        $epoint->execute();
+
+        $test = $epoint->getOutput();
+        $this->assertFalse($epoint->isValid());
+        $this->assertEquals('You have entered an invalid card no.', $test->message);
+    }
+
+    public function testExpectedInvalidCardVerfication()
+    {
+        $epoint = new $this->classname('9999000220220783', '1');
+        $epoint->execute();
+
+        $test = $epoint->getOutput();
+        $this->assertFalse($epoint->isValid());
+        $this->assertEquals('Your verification code is invalid.', $test->message);
+    }
+
     public function testCheckBalance()
     {
         $epoint = new $this->classname('9999000220220783', '0122222222');

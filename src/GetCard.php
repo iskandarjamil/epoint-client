@@ -68,6 +68,15 @@ class GetCard extends EpointClient implements CardInterface
         return current($wallets);
     }
 
+    public function isValid()
+    {
+        if (is_null($this->getOutput())) {
+            throw new TypeException("Please run `execute` method, before checking validation result.");
+        }
+
+        return $this->output->code === 200;
+    }
+
     protected function validate()
     {
         if (empty($this->getCardNo()) || is_null($this->cardNo)) {

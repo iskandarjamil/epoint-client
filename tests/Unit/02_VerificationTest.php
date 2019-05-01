@@ -6,24 +6,34 @@ use EpointClient\Exception\TypeException;
 use EpointClient\Verification;
 use PHPUnit\Framework\TestCase;
 
-class VerficationTest extends TestCase
+class VerificationTest extends TestCase
 {
+    protected $classname;
+
+    /**
+     * @before
+     */
+    public function setUpData()
+    {
+        $this->classname = Verification::class;
+    }
+
     public function testClassExists()
     {
-        $this->assertTrue(class_exists(Verification::class));
+        $this->assertTrue(class_exists($this->classname));
     }
 
     public function testExpectedExeptionOnEmpty()
     {
         $this->expectException(TypeException::class);
 
-        $epoint = new Verification();
+        $epoint = new $this->classname();
         $epoint->execute();
     }
 
-    public function testVerfication()
+    public function testVerification()
     {
-        $epoint = new Verification('1', '1');
+        $epoint = new $this->classname('1', '1');
         $test = $epoint->execute();
 
         $this->assertTrue($test);
@@ -31,7 +41,7 @@ class VerficationTest extends TestCase
 
     public function testOuputNotEmpty()
     {
-        $epoint = new Verification('1', '1');
+        $epoint = new $this->classname('1', '1');
         $epoint->execute();
 
         $test = $epoint->getOutput();
@@ -44,18 +54,18 @@ class VerficationTest extends TestCase
      */
     public function testCardNoTrimValue($input, $expected)
     {
-        $epoint = new Verification($input, '1');
+        $epoint = new $this->classname($input, '1');
         $epoint->execute();
 
         $this->assertEquals($expected, $epoint->getCardNo());
     }
 
     /**
-     * @dataProvider getVerficationCodeProvider
+     * @dataProvider getVerificationCodeProvider
      */
-    public function testVerficationCodeTrimValue($input, $expected)
+    public function testVerificationCodeTrimValue($input, $expected)
     {
-        $epoint = new Verification('1', $input);
+        $epoint = new $this->classname('1', $input);
         $epoint->execute();
 
         $this->assertEquals($expected, $epoint->getVerificationCode());
@@ -63,7 +73,7 @@ class VerficationTest extends TestCase
 
     public function testExpectedOutputInvalidCard()
     {
-        $epoint = new Verification('1', '1');
+        $epoint = new $this->classname('1', '1');
         $epoint->execute();
 
         $test = $epoint->getOutput();
@@ -73,7 +83,7 @@ class VerficationTest extends TestCase
 
     public function testExpectedOutputUnableToVerify()
     {
-        $epoint = new Verification('1', '1');
+        $epoint = new $this->classname('1', '1');
         $epoint->execute();
 
         $test = $epoint->isValid();
@@ -82,16 +92,36 @@ class VerficationTest extends TestCase
 
     public function testCheckStatusIsNotValid()
     {
-        $epoint = new Verification('1', '1');
+        $epoint = new $this->classname('1', '1');
         $epoint->execute();
 
         $test = $epoint->getOutput();
         $this->assertNotEquals(200, $test->code);
     }
 
+    public function testExpectedInvalidCardNo()
+    {
+        $epoint = new $this->classname('1', '1');
+        $epoint->execute();
+
+        $test = $epoint->getOutput();
+        $this->assertFalse($epoint->isValid());
+        $this->assertEquals('You have entered an invalid card no.', $test->message);
+    }
+
+    public function testExpectedInvalidCardVerification()
+    {
+        $epoint = new $this->classname('9999000220220783', '1');
+        $epoint->execute();
+
+        $test = $epoint->getOutput();
+        $this->assertFalse($epoint->isValid());
+        $this->assertEquals('Your verification code is invalid.', $test->message);
+    }
+
     public function testSuccessVerify()
     {
-        $epoint = new Verification('9999000220220783', '0122222222');
+        $epoint = new $this->classname('9999000220220783', '0122222222');
         $epoint->execute();
 
         $test = $epoint->getOutput();
@@ -100,7 +130,7 @@ class VerficationTest extends TestCase
 
     public function testCheckStatusIsValid()
     {
-        $epoint = new Verification('9999000220220783', '0122222222');
+        $epoint = new $this->classname('9999000220220783', '0122222222');
         $epoint->execute();
 
         $test = $epoint->isValid();
@@ -121,7 +151,7 @@ class VerficationTest extends TestCase
         ];
     }
 
-    public function getVerficationCodeProvider()
+    public function getVerificationCodeProvider()
     {
         return [
             [' 1 ', '1'], //

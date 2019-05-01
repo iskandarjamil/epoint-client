@@ -74,6 +74,14 @@ class DeductCard extends EpointClient implements CardInterface
 
     public function isAccepted()
     {
+        if (is_null($this->getOutput())) {
+            throw new TypeException("Please run `execute` method, before checking validation result.");
+        }
+
+        if (!isset($this->output->data)) {
+            return false;
+        }
+
         $response = $this->output->data;
 
         if (!isset($response->stored_value_balance)) {

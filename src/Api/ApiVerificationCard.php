@@ -29,49 +29,7 @@ class ApiVerificationCard extends ServiceRepository
 
     public function handle()
     {
-        if (!$this->isValidCardNo($this->getCardNo())) {
-            $this->result = (object) [
-                'status' => false,
-                'code' => 101,
-                'message' => "You have entered an invalid card no.",
-            ];
-
-            return false;
-        }
-
-        $this->getEpointCard();
-        if (!$this->epointCard->isValid()) {
-            $this->result = (object) [
-                'status' => false,
-                'code' => 102,
-                'message' => "Your card no is invalid.",
-            ];
-
-            return $this;
-        }
-
-        /**
-         * Temporary disable verification checker
-         * @var [type]
-         */
-        $verify = $this->epointCard->verify($this->getVerificationCode());
-        if (is_null($this->epointCard->getVerificationCode())) {
-            $this->result = (object) [
-                'status' => false,
-                'code' => 103,
-                'message' => "Unable to determine your verification code.",
-            ];
-
-            return $this;
-        }
-
-        if (!$verify) {
-            $this->result = (object) [
-                'status' => false,
-                'code' => 104,
-                'message' => "Your verification code is invalid.",
-            ];
-
+        if (!parent::handle()) {
             return $this;
         }
 
@@ -85,46 +43,5 @@ class ApiVerificationCard extends ServiceRepository
         ];
 
         return $this;
-    }
-
-    /*
-     * Getter
-     */
-
-    public function getResult()
-    {
-        return $this->result;
-    }
-
-    public function getCardNo()
-    {
-        return $this->parent->getCardNo();
-    }
-
-    public function getVerificationCode()
-    {
-        return $this->parent->getVerificationCode();
-    }
-
-    public function getEpointCard($useCache = true)
-    {
-        if ($useCache === true) {
-            if (!is_null($this->epointCard)) {
-                return $this->epointCard;
-            }
-        }
-
-        $this->epointCard = new EpointRepository($this->getCardNo());
-
-        return $this;
-    }
-
-    /*
-     * Checker
-     */
-
-    public function isValidCardNo($value)
-    {
-        return is_numeric($value) && strlen($value) >= 10;
     }
 }
