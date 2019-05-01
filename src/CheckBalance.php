@@ -112,6 +112,25 @@ class CheckBalance extends EpointClient implements CardInterface
     }
 
     /**
+     * Retrieve card's point.
+     *
+     * @return string
+     * @throws TypeException
+     */
+    public function getPoint()
+    {
+        if (!$this->isValid()) {
+            throw new TypeException($this->output->message);
+        }
+
+        $wallet = $this->getWallet();
+
+        if ($wallet) {
+            return $wallet->total_points;
+        }
+    }
+
+    /**
      * Retrieve request returns valid.
      *
      * @return boolean

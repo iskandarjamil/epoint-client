@@ -69,4 +69,13 @@ class CheckBalanceTest extends TestCase
         $test = $epoint->getBalance();
         $this->assertNotNull($test);
     }
+
+    public function testCheckPoint()
+    {
+        $epoint = new $this->classname('9999000220220783', '0122222222');
+        $epoint->execute();
+
+        $test = $epoint->getPoint();
+        $this->assertNotNull($test);
+    }
 }
