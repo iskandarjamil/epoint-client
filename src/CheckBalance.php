@@ -59,21 +59,51 @@ class CheckBalance extends EpointClient implements CardInterface
         return true;
     }
 
+    /**
+     * Retrieve card information.
+     *
+     * @return array
+     * @throws TypeException
+     */
     public function get()
     {
+        if (!$this->isValid()) {
+            throw new TypeException($this->output->message);
+        }
+
         return $this->output->data;
     }
 
+    /**
+     * Retrieve card's wallet information.
+     *
+     * @return array
+     * @throws TypeException
+     */
     public function getWallet()
     {
+        if (!$this->isValid()) {
+            throw new TypeException($this->output->message);
+        }
+
         $card = $this->get();
         $wallets = $card->wallets;
 
         return current($wallets);
     }
 
+    /**
+     * Retrieve card's balance.
+     *
+     * @return string
+     * @throws TypeException
+     */
     public function getBalance()
     {
+        if (!$this->isValid()) {
+            throw new TypeException($this->output->message);
+        }
+
         $wallet = $this->getWallet();
 
         if ($wallet) {
@@ -81,6 +111,12 @@ class CheckBalance extends EpointClient implements CardInterface
         }
     }
 
+    /**
+     * Retrieve request returns valid.
+     *
+     * @return boolean
+     * @throws TypeException
+     */
     public function isValid()
     {
         if (is_null($this->getOutput())) {
@@ -90,6 +126,12 @@ class CheckBalance extends EpointClient implements CardInterface
         return $this->output->code === 200;
     }
 
+    /**
+     * Execute process.
+     *
+     * @return void
+     * @throws TypeException
+     */
     protected function validate()
     {
         if (empty($this->getCardNo()) || is_null($this->cardNo)) {
