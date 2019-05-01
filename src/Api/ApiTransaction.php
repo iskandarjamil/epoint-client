@@ -9,30 +9,25 @@
  * file that was distributed with this source code.
  */
 
-namespace EpointClient\Repositories;
+namespace EpointClient\Api;
 
-use EpointClient\Interfaces\PromiseableInterface;
+use EpointClient\Transaction;
 use EpointClient\Interfaces\ServiceInterface;
-use EpointClient\Resources\IsPromiseable;
-use EpointClient\Resources\Request;
+use EpointClient\Repositories\EpointRepository;
+use EpointClient\Repositories\ServiceRepository;
+use EpointClient\Repositories\UserRepository;
+use EpointClient\Verification;
 
-abstract class ServiceRepository implements ServiceInterface, PromiseableInterface
+class ApiTransaction extends ServiceRepository
 {
-    use IsPromiseable;
-
     protected $parent;
     protected $epointCard;
-    protected $isError = false;
 
-    public function __construct($parent)
+    public function __construct(Transaction $parent)
     {
         $this->parent = $parent;
     }
 
-    /**
-     * Base rules card validation
-     * @return boolean
-     */
     public function handle()
     {
         if (!$this->isValidCardNo($this->getCardNo())) {
@@ -53,31 +48,31 @@ abstract class ServiceRepository implements ServiceInterface, PromiseableInterfa
                 'message' => "Your card no is invalid.",
             ];
 
-            return false;
+            return $this;
         }
 
-        $verify = $this->epointCard->verify($this->getVerificationCode());
-        if (is_null($this->epointCard->getVerificationCode())) {
+        $transaction = $this->epointCard->transaction();
+        if (isset($transaction->error_code) && $transaction->error_code === '1000') {
             $this->result = (object) [
                 'status' => false,
-                'code' => 103,
-                'message' => "Unable to determine your verification code.",
+                'code' => 105,
+                'message' => "Unable to capture your transaction information. Please refer administrator error code (105).",
             ];
 
-            return false;
+            return $this;
         }
 
-        if (!$verify) {
-            $this->result = (object) [
-                'status' => false,
-                'code' => 104,
-                'message' => "Your verification code is invalid.",
-            ];
+        /**
+         * Success
+         */
+        $this->result = (object) [
+            'status' => true,
+            'code' => 200,
+            'message' => "Card transaction information retrieved.",
+            'data' => isset($transaction->member) ? $transaction->member : $transaction
+        ];
 
-            return false;
-        }
-
-        return true;
+        return $this;
     }
 
     /*

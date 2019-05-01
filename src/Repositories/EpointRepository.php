@@ -213,6 +213,31 @@ class EpointRepository extends DataRepository
         return $response;
     }
 
+    public function transaction()
+    {
+        $data = [
+            'api_key'            => $this->getEpointApi(),
+            'outlet_id'          => $this->getEpointStoreId(),
+            'loyaltycard'        => $this->getCardId(),
+            'm'                  => 'enquire_member',
+            'transaction_record' => 'YES',
+            'voucher_list'       => 'NO',
+        ];
+
+        $response = (new Curl())
+            ->url($this->getEntryPoint())
+            ->data($data, 'json')
+            ->wrapper("data")
+            ->isPost()
+            ->run();
+        $response = json_decode($response);
+
+        $this->setErrors($response);
+
+
+        return $response;
+    }
+
     public function isValid()
     {
         return !is_null($this->data);
