@@ -2,7 +2,7 @@
 
 <p align="center">
 <a href="https://poser.pugx.org/iskandarjamil/epoint-client"><img src="https://poser.pugx.org/iskandarjamil/epoint-client/v/stable" alt="Stable"></a>
-<a href="https://packagist.org/packages/iskandarjamil/epoint-client/LICENSE"><img src="https://poser.pugx.org/iskandarjamil/epoint-client/license" alt="License"></a>
+<a href="https://github.com/iskandarjamil/epoint-client/blob/master/LICENSE"><img src="https://poser.pugx.org/iskandarjamil/epoint-client/license" alt="License"></a>
 </p>
 
 The Epoint System API Client Library allowed your to easily integrate [Epoint System](http://epointpos.com.my/) with your application.
