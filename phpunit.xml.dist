@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<phpunit backupGlobals="false"
+<phpunit bootstrap="./tests/bootstrap.php"
+         backupGlobals="false"
          backupStaticAttributes="false"
          colors="true"
          convertErrorsToExceptions="true"
@@ -9,8 +10,8 @@
          processIsolation="false"
          stopOnFailure="true">
     <testsuites>
-        <testsuite name="DesignTestCase Test Suite">
-            <directory>./test/</directory>
+        <testsuite name="Unit Test Suite">
+            <directory>./tests/Unit</directory>
         </testsuite>
     </testsuites>
 </phpunit>
