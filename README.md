@@ -1,9 +1,7 @@
 # Epoint System Client Library for PHP
 
-<p align="center">
-<a href="https://packagist.org/packages/iskandarjamil/epoint-client/"><img src="https://poser.pugx.org/iskandarjamil/epoint-client/v/stable?format=flat-square" alt="Stable"></a>
-<a href="https://github.com/iskandarjamil/epoint-client/blob/master/LICENSE"><img src="https://poser.pugx.org/iskandarjamil/epoint-client/license?format=flat-square" alt="License"></a>
-</p>
+[![Latest Stable Version](https://poser.pugx.org/iskandarjamil/epoint-client/v/stable?format=flat-square)](https://packagist.org/packages/iskandarjamil/epoint-client)
+[![License](https://poser.pugx.org/iskandarjamil/epoint-client/license?format=flat-square)](https://packagist.org/packages/iskandarjamil/epoint-client)
 
 The Epoint System API Client Library allowed your to easily integrate [Epoint System](http://epoint.com.sg/) with your application.
 
