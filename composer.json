@@ -33,6 +33,5 @@
         "files": [
             "src/helpers/global.php"
         ]
-    },
-    "version": "dev-master"
+    }
 }
