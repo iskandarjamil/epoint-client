@@ -1,7 +1,7 @@
 # Epoint System Client Library for PHP
 
 <p align="center">
-<a href="https://poser.pugx.org/iskandarjamil/epoint-client"><img src="https://poser.pugx.org/iskandarjamil/epoint-client/v/stable" alt="Stable"></a>
+<a href="https://packagist.org/packages/iskandarjamil/epoint-client/"><img src="https://poser.pugx.org/iskandarjamil/epoint-client/v/stable" alt="Stable"></a>
 <a href="https://github.com/iskandarjamil/epoint-client/blob/master/LICENSE"><img src="https://poser.pugx.org/iskandarjamil/epoint-client/license" alt="License"></a>
 </p>
 
