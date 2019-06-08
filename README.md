@@ -5,7 +5,7 @@
 <a href="https://github.com/iskandarjamil/epoint-client/blob/master/LICENSE"><img src="https://poser.pugx.org/iskandarjamil/epoint-client/license" alt="License"></a>
 </p>
 
-The Epoint System API Client Library allowed your to easily integrate [Epoint System](http://epointpos.com.my/) with your application.
+The Epoint System API Client Library allowed your to easily integrate [Epoint System](http://epoint.com.sg/) with your application.
 
 ## Table of Contents
 
